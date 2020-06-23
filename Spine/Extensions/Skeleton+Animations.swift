@@ -51,4 +51,47 @@ extension Skeleton {
             }
         })
     }
+
+    public func switchToAnimation(named: String, repeating: Bool)
+    {
+        freezeAnimations()
+        removeAction(forKey: "spine_channel")
+        if var animation = animation(named: named) {
+            if repeating {
+                animation = SKAction.repeatForever(animation)
+            }
+            run(animation, withKey: "spine_channel")
+        }
+    }
+
+    public func switchToAnimations(list: [(named: String, repeating: Bool)])
+    {
+        freezeAnimations()
+        removeAction(forKey: "spine_channel")
+
+        let actions = list.compactMap { (named: String, repeating: Bool) -> SKAction? in
+            if var animation = animation(named: named) {
+                if repeating {
+                    animation = SKAction.repeatForever(animation)
+                }
+                return animation
+            }
+            return nil
+        }
+        run(SKAction.sequence(actions))
+    }
+
+    public func freezeAnimations()
+    {
+        for child in self[".//*"] {
+            if child.hasActions() {
+                child.removeAllActions()
+            }
+
+            if let slot = child as? Slot {
+                slot.dropToDefaults()
+            }
+        }
+    }
+
 }

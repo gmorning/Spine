@@ -8,18 +8,7 @@
 
 import SpriteKit
 
-#if os(OSX)
-    
-    func createColor(with model: ColorModel) -> NSColor {
-    
-        return NSColor(srgbRed: model.red, green: model.green, blue: model.blue, alpha: model.alpha)
-    }
+func createColor(with model: ColorModel) -> SKColor {
 
-#else
-    
-    func createColor(with model: ColorModel) -> UIColor {
-        
-        return UIColor(red: model.red, green: model.green, blue: model.blue, alpha: model.alpha)
-    }
-
-#endif
+    return SKColor(red: model.red, green: model.green, blue: model.blue, alpha: model.alpha)
+}
