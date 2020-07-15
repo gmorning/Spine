@@ -78,7 +78,7 @@ extension Skeleton {
             }
             return nil
         }
-        run(SKAction.sequence(actions))
+        run(SKAction.sequence(actions), withKey: "spine_channel")
     }
 
     public func freezeAnimations()
