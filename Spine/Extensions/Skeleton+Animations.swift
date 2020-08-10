@@ -54,27 +54,20 @@ extension Skeleton {
 
     public func switchToAnimation(named: String, repeating: Bool)
     {
-        freezeAnimations()
-        removeAction(forKey: "spine_channel")
-        if var animation = animation(named: named) {
-            if repeating {
-                animation = SKAction.repeatForever(animation)
-            }
-            run(animation, withKey: "spine_channel")
-        }
+        switchToAnimations(list: [(named: named, repeating: repeating)])
     }
 
     public func switchToAnimations(list: [(named: String, repeating: Bool)])
     {
-        freezeAnimations()
         removeAction(forKey: "spine_channel")
+//        print("switch to \(list.map { $0.named } )")
 
         let actions = list.compactMap { (named: String, repeating: Bool) -> SKAction? in
-            if var animation = animation(named: named) {
-                if repeating {
-                    animation = SKAction.repeatForever(animation)
-                }
-                return animation
+            if let animation = animation(named: named) {
+                return SKAction.sequence([
+//                    dropToDefaultsAction(),
+                    repeating ? SKAction.repeatForever(animation) : animation
+                ])
             }
             return nil
         }
